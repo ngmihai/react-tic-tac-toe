@@ -13,4 +13,9 @@
 
 .item:hover {
   background-color: lightgray;
+  cursor: pointer;
+}
+
+.disabled {
+  pointer-events: none;
 }

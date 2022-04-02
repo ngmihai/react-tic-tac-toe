@@ -5,24 +5,31 @@ import type { Player } from "../components/player/player";
 
 type PlayerProvider = {
   player: Player;
-  dispatch: React.DispatchWithoutAction;
+  switchToNextPlayer: () => void;
 };
 
 const PlayerContext = React.createContext<PlayerProvider | null>(null);
 
-const playerReducer = (state: Player): Player => {
+const getNextPlayer = (currentPlayer: Player): Player => {
   const identifier =
-    state.identifier === PLAYERS.PLAYER_1 ? PLAYERS.PLAYER_2 : PLAYERS.PLAYER_1;
+    currentPlayer.identifier === PLAYERS.PLAYER_1
+      ? PLAYERS.PLAYER_2
+      : PLAYERS.PLAYER_1;
   return { identifier };
 };
 
 export const PlayerContextProvider: React.FC = ({ children }) => {
-  const [player, dispatch] = React.useReducer(playerReducer, {
+  const [player, switchPlayer] = React.useState<Player>({
     identifier: PLAYERS.PLAYER_1,
   });
 
+  const switchToNextPlayer = (): void => {
+    const nextPlayer = getNextPlayer(player);
+    switchPlayer(nextPlayer);
+  };
+
   return (
-    <PlayerContext.Provider value={{ player, dispatch }}>
+    <PlayerContext.Provider value={{ player, switchToNextPlayer }}>
       {children}
     </PlayerContext.Provider>
   );
@@ -35,5 +42,8 @@ export const usePlayer = () => {
     throw new Error("usePlayer must be used inside a PlayerContext provider.");
   }
 
-  return { player: context.player, switchPlayer: context.dispatch };
+  return {
+    player: context.player,
+    switchToNextPlayer: context.switchToNextPlayer,
+  };
 };

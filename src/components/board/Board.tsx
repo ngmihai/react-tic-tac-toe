@@ -19,11 +19,9 @@ const createBoard = () => {
 };
 
 const Board: React.FC = () => {
-  const [board, setBoard] = React.useState(createBoard());
-
   return (
     <div className={styles.container}>
-      <PlayerContextProvider>{board}</PlayerContextProvider>
+      <PlayerContextProvider>{createBoard()}</PlayerContextProvider>
     </div>
   );
 };
