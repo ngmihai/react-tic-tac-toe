@@ -26,7 +26,7 @@ const Game: React.FC = () => {
       </PlayerContextProvider>
       {openModal && (
         <Modal
-          title="Game ended!"
+          title="Game ended &#127918;"
           message={modalMessage}
           onConfirm={() => setOpenModal(false)}
         />
