@@ -1,4 +1,5 @@
 import * as React from "react";
+import { PlayerContextProvider } from "../../context/PlayerContext";
 
 import Board from "../board/Board";
 import { Player } from "../player/player";
@@ -15,7 +16,9 @@ const Game: React.FC = () => {
 
   return (
     <>
-      <Board onFinish={onFinish} />
+      <PlayerContextProvider>
+        <Board onFinish={onFinish} />
+      </PlayerContextProvider>
       {openModal && (
         <Modal
           title="Game ended!"

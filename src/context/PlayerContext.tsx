@@ -5,6 +5,7 @@ import type { Player } from "../components/player/player";
 
 type PlayerProvider = {
   player: Player;
+  resetPlayer: () => void;
   switchToNextPlayer: () => void;
 };
 
@@ -19,17 +20,21 @@ const getNextPlayer = (currentPlayer: Player): Player => {
 };
 
 export const PlayerContextProvider: React.FC = ({ children }) => {
-  const [player, switchPlayer] = React.useState<Player>({
+  const [player, setPlayer] = React.useState<Player>({
     identifier: PLAYERS.PLAYER_1,
   });
 
   const switchToNextPlayer = (): void => {
     const nextPlayer = getNextPlayer(player);
-    switchPlayer(nextPlayer);
+    setPlayer(nextPlayer);
+  };
+
+  const resetPlayer = () => {
+    setPlayer({ identifier: PLAYERS.PLAYER_1 });
   };
 
   return (
-    <PlayerContext.Provider value={{ player, switchToNextPlayer }}>
+    <PlayerContext.Provider value={{ player, resetPlayer, switchToNextPlayer }}>
       {children}
     </PlayerContext.Provider>
   );
@@ -44,6 +49,7 @@ export const usePlayer = () => {
 
   return {
     player: context.player,
+    resetPlayer: context.resetPlayer,
     switchToNextPlayer: context.switchToNextPlayer,
   };
 };

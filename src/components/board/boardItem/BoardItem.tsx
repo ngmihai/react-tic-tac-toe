@@ -5,8 +5,7 @@ import { usePlayer } from "../../../context/PlayerContext";
 
 import styles from "./styles/BoardItem.module.css";
 import { Player } from "../../player/player";
-
-type Position = { i: number; j: number };
+import { Position } from "../Position";
 
 type Props = {
   value: string;

@@ -1,23 +1,22 @@
 import * as React from "react";
-import { PlayerContextProvider } from "../../context/PlayerContext";
-import { Player } from "../player/player";
 
+import { usePlayer } from "../../context/PlayerContext";
+import { Player } from "../player/player";
 import BoardItem from "./boardItem/BoardItem";
+import { Position } from "./Position";
 
 import styles from "./styles/Board.module.css";
 
-type Position = { i: number; j: number };
-
-const createBoard = (
+const createBoardItems = (
   board: string[][],
   onClickCallback: (player: Player, position: Position) => void
 ) => {
-  let jsxBoard: JSX.Element[][] = [];
+  let boardItems: JSX.Element[][] = [];
 
   for (let i = 0; i < 3; i++) {
-    jsxBoard[i] = [];
+    boardItems[i] = [];
     for (let j = 0; j < 3; j++) {
-      jsxBoard[i].push(
+      boardItems[i].push(
         <BoardItem
           value={board[i][j]}
           key={`[${i}][${j}]`}
@@ -28,10 +27,10 @@ const createBoard = (
     }
   }
 
-  return jsxBoard;
+  return boardItems;
 };
 
-const checkBoard = (board: string[][]) => {
+const isGameFinished = (board: string[][]) => {
   for (let i = 0; i < 3; i++) {
     if (
       board[i][0] &&
@@ -72,11 +71,13 @@ type Props = {
 };
 
 const Board: React.FC<Props> = ({ onFinish }) => {
-  const [board, setBoard] = React.useState([
+  const defaultBoard = [
     ["", "", ""],
     ["", "", ""],
     ["", "", ""],
-  ]);
+  ];
+  const [board, setBoard] = React.useState(defaultBoard);
+  const { resetPlayer } = usePlayer();
 
   const boardItemClickHandler = (player: Player, position: Position) => {
     const { i, j } = position;
@@ -84,18 +85,16 @@ const Board: React.FC<Props> = ({ onFinish }) => {
     newBoard[i][j] = player.identifier;
     setBoard(newBoard);
 
-    if (checkBoard(newBoard)) {
+    if (isGameFinished(newBoard)) {
       onFinish(player);
+      setBoard(defaultBoard);
+      resetPlayer();
     }
   };
 
-  const jsxBoard = createBoard(board, boardItemClickHandler);
+  const boardItems = createBoardItems(board, boardItemClickHandler);
 
-  return (
-    <div className={styles.container}>
-      <PlayerContextProvider>{jsxBoard}</PlayerContextProvider>
-    </div>
-  );
+  return <div className={styles.container}>{boardItems}</div>;
 };
 
 export default Board;
