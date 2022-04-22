@@ -30,21 +30,27 @@ const createBoardItems = (
   return boardItems;
 };
 
-const isGameFinished = (board: string[][]) => {
+enum BoardState {
+  PLAYING,
+  WON,
+  DRAW,
+}
+
+const getBoardState = (board: string[][]): BoardState => {
   for (let i = 0; i < 3; i++) {
     if (
       board[i][0] &&
       board[i][0] === board[i][1] &&
       board[i][0] === board[i][2]
     ) {
-      return true;
+      return BoardState.WON;
     }
     if (
       board[0][i] &&
       board[0][i] === board[1][i] &&
       board[0][i] === board[2][i]
     ) {
-      return true;
+      return BoardState.WON;
     }
   }
 
@@ -53,21 +59,29 @@ const isGameFinished = (board: string[][]) => {
     board[0][0] === board[1][1] &&
     board[0][0] === board[2][2]
   ) {
-    return true;
+    return BoardState.WON;
   }
   if (
     board[0][2] &&
     board[0][2] === board[1][1] &&
     board[1][1] === board[2][0]
   ) {
-    return true;
+    return BoardState.WON;
   }
 
-  return false;
+  for (let i = 0; i < 3; i++) {
+    for (let j = 0; j < 3; j++) {
+      if (!board[i][j]) {
+        return BoardState.PLAYING;
+      }
+    }
+  }
+
+  return BoardState.DRAW;
 };
 
 type Props = {
-  onFinish: (player: Player) => void;
+  onFinish: (player: Player, isDraw: boolean) => void;
 };
 
 const Board: React.FC<Props> = ({ onFinish }) => {
@@ -85,16 +99,19 @@ const Board: React.FC<Props> = ({ onFinish }) => {
     newBoard[i][j] = player.identifier;
     setBoard(newBoard);
 
-    if (isGameFinished(newBoard)) {
-      onFinish(player);
+    const gameState = getBoardState(newBoard);
+    if (gameState !== BoardState.PLAYING) {
+      onFinish(player, gameState === BoardState.DRAW);
       setBoard(defaultBoard);
       resetPlayer();
     }
   };
 
-  const boardItems = createBoardItems(board, boardItemClickHandler);
-
-  return <div className={styles.container}>{boardItems}</div>;
+  return (
+    <div className={styles.container}>
+      {createBoardItems(board, boardItemClickHandler)}
+    </div>
+  );
 };
 
 export default Board;

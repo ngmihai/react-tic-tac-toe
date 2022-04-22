@@ -9,8 +9,13 @@ const Game: React.FC = () => {
   const [openModal, setOpenModal] = React.useState(false);
   const [modalMessage, setModalMessage] = React.useState("");
 
-  const onFinish = (player: Player) => {
-    setModalMessage(`Player ${player.identifier} won!`);
+  const onFinish = (player: Player, isDraw: boolean) => {
+    if (isDraw) {
+      setModalMessage("The Game is a Draw!");
+    } else {
+      setModalMessage(`Player ${player.identifier} won!`);
+    }
+
     setOpenModal(true);
   };
 
