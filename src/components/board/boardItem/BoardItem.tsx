@@ -4,17 +4,25 @@ import classNames from "classnames";
 import { usePlayer } from "../../../context/PlayerContext";
 
 import styles from "./styles/BoardItem.module.css";
+import { Player } from "../../player/player";
 
-const BoardItem: React.FC = () => {
-  const [value, setValue] = React.useState<string>();
+type Position = { i: number; j: number };
+
+type Props = {
+  value: string;
+  position: Position;
+  onClick: (player: Player, position: Position) => void;
+};
+
+const BoardItem: React.FC<Props> = ({ value, position, onClick }) => {
   const { player, switchToNextPlayer } = usePlayer();
   const className = classNames(styles.item, { [styles.disabled]: value });
 
   const onClickHandler = () => {
     if (value) return;
 
-    setValue(player.identifier);
     switchToNextPlayer();
+    onClick(player, position);
   };
 
   return (
