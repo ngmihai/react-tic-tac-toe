@@ -1,11 +1,11 @@
 import * as React from "react";
 import classNames from "classnames";
 
-import { usePlayer } from "../../../context/PlayerContext";
+import { usePlayer } from "context/PlayerContext";
+import { Player } from "components/player/player";
+import { Position } from "components/board/Position";
 
 import styles from "./styles/BoardItem.module.css";
-import { Player } from "../../player/player";
-import { Position } from "../Position";
 
 type Props = {
   value: string;

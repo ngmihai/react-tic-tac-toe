@@ -1,9 +1,9 @@
 import * as React from "react";
-import { PlayerContextProvider } from "../../context/PlayerContext";
 
-import Board from "../board/Board";
-import { Player } from "../player/player";
-import Modal from "../ui/Modal";
+import { PlayerContextProvider } from "context/PlayerContext";
+import Board from "components/board/Board";
+import { Player } from "components/player/player";
+import Modal from "components/ui/Modal";
 
 const Game: React.FC = () => {
   const [openModal, setOpenModal] = React.useState(false);

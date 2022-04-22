@@ -1,7 +1,7 @@
 import * as React from "react";
 
-import { PLAYERS } from "../components/player/player";
-import type { Player } from "../components/player/player";
+import { PLAYERS } from "components/player/player";
+import type { Player } from "components/player/player";
 
 type PlayerProvider = {
   player: Player;

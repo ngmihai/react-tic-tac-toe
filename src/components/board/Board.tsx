@@ -1,9 +1,9 @@
 import * as React from "react";
 
-import { usePlayer } from "../../context/PlayerContext";
-import { Player } from "../player/player";
-import BoardItem from "./boardItem/BoardItem";
-import { Position } from "./Position";
+import { usePlayer } from "context/PlayerContext";
+import { Player } from "components/player/player";
+import BoardItem from "components/board/boardItem/BoardItem";
+import { Position } from "components/board/Position";
 
 import styles from "./styles/Board.module.css";
 
